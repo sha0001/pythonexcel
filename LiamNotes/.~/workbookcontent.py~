@@ -1,0 +1,29 @@
+# Manipulating the content of a workbook
+
+import openpyxl
+from openpyxl.comments import Comment
+from collections import defaultdict
+
+#Create a new workbook
+filename = "FinancialSample.xlsx"
+
+#Load the workbook
+wb = openpyxl.load_workbook(filename)
+
+#Get the active worksheet
+sheet = wb.active
+
+# Get entire column or row of cells
+
+col = sheet["C"]
+row = sheet[10]
+print(f"{len(col)} cells in column")
+print(f"{len(col)} cells in row")
+
+# Get a range of cells
+
+# Iterate over rows and columns
+
+# Create a cell with a comment in it
+
+# Save the workbook

@@ -1,0 +1,1237 @@
+* Python with Excel and Spreadsheet data
+** CSV - Comma separated values 
+- Stored in a flat format as rows of values, separated by commas
+- Useful for transfer of data
+- Used as a common storage format for generic spreadsheet data
+- Delimiter for columns is the comma, and the delimiter for rows is a line break
+
+** Convert CSV to Python Array
+Uses the CSV module - part of the python standard library 
+
+Below is an example of code that imports data from a file named "Inventory.CSV", converts to an array, and then prints out some selected parts of that array.  
+
+#+begin_source python
+# Converts a csv file into a python array. 
+
+import csv 
+
+def read_to_array(filename): 
+    data = []
+    with open(filename, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader: 
+            data.append(row)
+    return data
+
+inventory_data = read_to_array("Inventory.csv")
+print(f"Items: {len(inventory_data)}") # Print the length of the array
+print(inventory_data[0]) #Print the header data
+print(inventory_data[1]) #Print the first row of data
+print(inventory_data[1][0], inventory_data[1][2]) #print data at row 1 index zero, and row 1 index 2. 
+
+#+end_source 
+*** Output: 
+
+Items: 51
+['Item Name', 'Category', 'Quantity', 'Wholesale Price', 'Consumer Price']
+['Apple', 'Fruits', '100', '0.50', '0.75']
+Apple 100
+
+** Convert CSV to Python Dictionary 
+
+
+#+begin_source python 
+# Converts csv file into a python dictionary 
+
+import csv 
+import pprint
+
+def read_csv_to_dict(filename): 
+    data = {}
+    with open(filename,'r') as csvfile: 
+        reader=csv.DictReader(csvfile)
+        for row in reader: 
+            data[row[reader.fieldnames[0]]] = row
+
+# reader.fieldnames gives us the header data for a dictionary 
+# This would be the first row in our csv file. 
+
+    return data
+
+#Example usage 
+inventory_data = read_csv_to_dict("Inventory.csv") 
+
+#Accessing data 
+
+pprint.pprint(inventory_data) 
+pprint.pprint(inventory_data["Apple"]) 
+pprint.pprint(inventory_data["Apple"] ["Consumer Price"])
+
+#+end_source
+*** Output: 
+
+{'Apple': {'Category': 'Fruits',
+           'Consumer Price': '0.75',
+           'Item Name': 'Apple',
+           'Quantity': '100',
+           'Wholesale Price': '0.50'},
+ 'Avocado': {'Category': 'Fruits',
+             'Consumer Price': '1.75',
+             'Item Name': 'Avocado',
+             'Quantity': '100',
+             'Wholesale Price': '1.25'},
+ 'Bagel': {'Category': 'Breads',
+           'Consumer Price': '1.70',
+           'Item Name': 'Bagel',
+           'Quantity': '130',
+           'Wholesale Price': '1.20'},
+ 'Baguette': {'Category': 'Breads',
+              'Consumer Price': '2.25',
+              'Item Name': 'Baguette',
+              'Quantity': '100',
+              'Wholesale Price': '1.75'},
+ 'Banana': {'Category': 'Fruits',
+            'Consumer Price': '0.50',
+            'Item Name': 'Banana',
+            'Quantity': '150',
+            'Wholesale Price': '0.35'},
+ 'Beef': {'Category': 'Meats',
+          'Consumer Price': '4.50',
+          'Item Name': 'Beef',
+          'Quantity': '80',
+          'Wholesale Price': '3.00'},
+ 'Bell Pepper': {'Category': 'Vegetables',
+                 'Consumer Price': '0.85',
+                 'Item Name': 'Bell Pepper',
+                 'Quantity': '140',
+                 'Wholesale Price': '0.60'},
+ 'Brioche': {'Category': 'Breads',
+             'Consumer Price': '2.25',
+             'Item Name': 'Brioche',
+             'Quantity': '90',
+             'Wholesale Price': '1.75'},
+ 'Broccoli': {'Category': 'Vegetables',
+              'Consumer Price': '0.75',
+              'Item Name': 'Broccoli',
+              'Quantity': '180',
+              'Wholesale Price': '0.50'},
+ 'Butter': {'Category': 'Dairy',
+            'Consumer Price': '2.25',
+            'Item Name': 'Butter',
+            'Quantity': '150',
+            'Wholesale Price': '1.50'},
+ 'Carrot': {'Category': 'Vegetables',
+            'Consumer Price': '0.45',
+            'Item Name': 'Carrot',
+            'Quantity': '200',
+            'Wholesale Price': '0.30'},
+ 'Cheese': {'Category': 'Dairy',
+            'Consumer Price': '3.00',
+            'Item Name': 'Cheese',
+            'Quantity': '180',
+            'Wholesale Price': '2.00'},
+ 'Chicken': {'Category': 'Meats',
+             'Consumer Price': '3.50',
+             'Item Name': 'Chicken',
+             'Quantity': '100',
+             'Wholesale Price': '2.50'},
+ 'Ciabatta': {'Category': 'Breads',
+              'Consumer Price': '2.30',
+              'Item Name': 'Ciabatta',
+              'Quantity': '100',
+              'Wholesale Price': '1.80'},
+ 'Cottage Cheese': {'Category': 'Dairy',
+                    'Consumer Price': '1.75',
+                    'Item Name': 'Cottage Cheese',
+                    'Quantity': '160',
+                    'Wholesale Price': '1.25'},
+ 'Cream': {'Category': 'Dairy',
+           'Consumer Price': '2.50',
+           'Item Name': 'Cream',
+           'Quantity': '180',
+           'Wholesale Price': '1.75'},
+ 'Croissant': {'Category': 'Breads',
+               'Consumer Price': '1.50',
+               'Item Name': 'Croissant',
+               'Quantity': '120',
+               'Wholesale Price': '1.00'},
+ 'Cucumber': {'Category': 'Vegetables',
+              'Consumer Price': '0.50',
+              'Item Name': 'Cucumber',
+              'Quantity': '190',
+              'Wholesale Price': '0.35'},
+ 'Duck': {'Category': 'Meats',
+          'Consumer Price': '5.25',
+          'Item Name': 'Duck',
+          'Quantity': '90',
+          'Wholesale Price': '3.75'},
+ 'Eggs': {'Category': 'Dairy',
+          'Consumer Price': '1.75',
+          'Item Name': 'Eggs',
+          'Quantity': '250',
+          'Wholesale Price': '1.25'},
+ 'Grapes': {'Category': 'Fruits',
+            'Consumer Price': '0.85',
+            'Item Name': 'Grapes',
+            'Quantity': '80',
+            'Wholesale Price': '0.60'},
+ 'Heavy Cream': {'Category': 'Dairy',
+                 'Consumer Price': '2.75',
+                 'Item Name': 'Heavy Cream',
+                 'Quantity': '170',
+                 'Wholesale Price': '2.00'},
+ 'Kiwi': {'Category': 'Fruits',
+          'Consumer Price': '0.95',
+          'Item Name': 'Kiwi',
+          'Quantity': '120',
+          'Wholesale Price': '0.70'},
+ 'Lamb': {'Category': 'Meats',
+          'Consumer Price': '5.50',
+          'Item Name': 'Lamb',
+          'Quantity': '80',
+          'Wholesale Price': '4.00'},
+ 'Lettuce': {'Category': 'Vegetables',
+             'Consumer Price': '0.60',
+             'Item Name': 'Lettuce',
+             'Quantity': '160',
+             'Wholesale Price': '0.40'},
+ 'Milk': {'Category': 'Dairy',
+          'Consumer Price': '1.50',
+          'Item Name': 'Milk',
+          'Quantity': '200',
+          'Wholesale Price': '1.00'},
+ 'Multigrain Bread': {'Category': 'Breads',
+                      'Consumer Price': '2.10',
+                      'Item Name': 'Multigrain Bread',
+                      'Quantity': '110',
+                      'Wholesale Price': '1.60'},
+ 'Onion': {'Category': 'Vegetables',
+           'Consumer Price': '0.45',
+           'Item Name': 'Onion',
+           'Quantity': '180',
+           'Wholesale Price': '0.30'},
+ 'Orange': {'Category': 'Fruits',
+            'Consumer Price': '0.65',
+            'Item Name': 'Orange',
+            'Quantity': '120',
+            'Wholesale Price': '0.45'},
+ 'Pear': {'Category': 'Fruits',
+          'Consumer Price': '0.80',
+          'Item Name': 'Pear',
+          'Quantity': '110',
+          'Wholesale Price': '0.55'},
+ 'Pineapple': {'Category': 'Fruits',
+               'Consumer Price': '1.00',
+               'Item Name': 'Pineapple',
+               'Quantity': '130',
+               'Wholesale Price': '0.75'},
+ 'Pork': {'Category': 'Meats',
+          'Consumer Price': '4.00',
+          'Item Name': 'Pork',
+          'Quantity': '120',
+          'Wholesale Price': '2.75'},
+ 'Potato': {'Category': 'Vegetables',
+            'Consumer Price': '0.35',
+            'Item Name': 'Potato',
+            'Quantity': '220',
+            'Wholesale Price': '0.25'},
+ 'Rye Bread': {'Category': 'Breads',
+               'Consumer Price': '1.90',
+               'Item Name': 'Rye Bread',
+               'Quantity': '120',
+               'Wholesale Price': '1.40'},
+ 'Salmon': {'Category': 'Meats',
+            'Consumer Price': '6.00',
+            'Item Name': 'Salmon',
+            'Quantity': '90',
+            'Wholesale Price': '4.50'},
+ 'Sausages': {'Category': 'Meats',
+              'Consumer Price': '3.00',
+              'Item Name': 'Sausages',
+              'Quantity': '110',
+              'Wholesale Price': '2.00'},
+ 'Shrimp': {'Category': 'Meats',
+            'Consumer Price': '7.00',
+            'Item Name': 'Shrimp',
+            'Quantity': '120',
+            'Wholesale Price': '5.00'},
+ 'Sour Cream': {'Category': 'Dairy',
+                'Consumer Price': '1.50',
+                'Item Name': 'Sour Cream',
+                'Quantity': '190',
+                'Wholesale Price': '1.00'},
+ 'Sourdough Bread': {'Category': 'Breads',
+                     'Consumer Price': '2.00',
+                     'Item Name': 'Sourdough Bread',
+                     'Quantity': '140',
+                     'Wholesale Price': '1.50'},
+ 'Spinach': {'Category': 'Vegetables',
+             'Consumer Price': '0.80',
+             'Item Name': 'Spinach',
+             'Quantity': '170',
+             'Wholesale Price': '0.55'},
+ 'Strawberries': {'Category': 'Fruits',
+                  'Consumer Price': '1.50',
+                  'Item Name': 'Strawberries',
+                  'Quantity': '90',
+                  'Wholesale Price': '1.20'},
+ 'Tomato': {'Category': 'Vegetables',
+            'Consumer Price': '0.60',
+            'Item Name': 'Tomato',
+            'Quantity': '150',
+            'Wholesale Price': '0.40'},
+ 'Turkey': {'Category': 'Meats',
+            'Consumer Price': '4.75',
+            'Item Name': 'Turkey',
+            'Quantity': '70',
+            'Wholesale Price': '3.25'},
+ 'Veal': {'Category': 'Meats',
+          'Consumer Price': '5.00',
+          'Item Name': 'Veal',
+          'Quantity': '100',
+          'Wholesale Price': '3.50'},
+ 'Watermelon': {'Category': 'Fruits',
+                'Consumer Price': '2.50',
+                'Item Name': 'Watermelon',
+                'Quantity': '90',
+                'Wholesale Price': '2.00'},
+ 'Whipped Cream': {'Category': 'Dairy',
+                   'Consumer Price': '3.00',
+                   'Item Name': 'Whipped Cream',
+                   'Quantity': '150',
+                   'Wholesale Price': '2.25'},
+ 'White Bread': {'Category': 'Breads',
+                 'Consumer Price': '1.75',
+                 'Item Name': 'White Bread',
+                 'Quantity': '150',
+                 'Wholesale Price': '1.25'},
+ 'Whole Wheat Bread': {'Category': 'Breads',
+                       'Consumer Price': '2.00',
+                       'Item Name': 'Whole Wheat Bread',
+                       'Quantity': '130',
+                       'Wholesale Price': '1.50'},
+ 'Yogurt': {'Category': 'Dairy',
+            'Consumer Price': '1.25',
+            'Item Name': 'Yogurt',
+            'Quantity': '220',
+            'Wholesale Price': '0.75'},
+ 'Zucchini': {'Category': 'Vegetables',
+              'Consumer Price': '0.65',
+              'Item Name': 'Zucchini',
+              'Quantity': '150',
+              'Wholesale Price': '0.45'}}
+{'Category': 'Fruits',
+ 'Consumer Price': '0.75',
+ 'Item Name': 'Apple',
+ 'Quantity': '100',
+ 'Wholesale Price': '0.50'}
+'0.75
+
+
+The following excerpt is the same, but instead of using the Item name as the index, 
+we are instead using a generic line number. 
+
+#+begin_source python
+import csv 
+import pprint
+
+def read_csv_to_dict(filename): 
+    data = {}
+    with open(filename,'r') as csvfile: 
+        reader=csv.DictReader(csvfile)
+        key = 0
+        for row in reader: 
+            data[key] = row
+            key += 1 
+
+    return data
+
+#Example usage 
+inventory_data = read_csv_to_dict("Inventory.csv") 
+
+#Accessing data 
+
+pprint.pprint(inventory_data) 
+
+#+end_source 
+*** Output: 
+
+{0: {'Category': 'Fruits',
+     'Consumer Price': '0.75',
+     'Item Name': 'Apple',
+     'Quantity': '100',
+     'Wholesale Price': '0.50'},
+ 1: {'Category': 'Fruits',
+     'Consumer Price': '0.50',
+     'Item Name': 'Banana',
+     'Quantity': '150',
+     'Wholesale Price': '0.35'},
+ 2: {'Category': 'Fruits',
+     'Consumer Price': '0.65',
+     'Item Name': 'Orange',
+     'Quantity': '120',
+     'Wholesale Price': '0.45'},
+ 3: {'Category': 'Fruits',
+     'Consumer Price': '0.85',
+     'Item Name': 'Grapes',
+     'Quantity': '80',
+     'Wholesale Price': '0.60'},
+ 4: {'Category': 'Fruits',
+     'Consumer Price': '1.50',
+     'Item Name': 'Strawberries',
+     'Quantity': '90',
+     'Wholesale Price': '1.20'},
+ 5: {'Category': 'Vegetables',
+     'Consumer Price': '0.45',
+     'Item Name': 'Carrot',
+     'Quantity': '200',
+     'Wholesale Price': '0.30'},
+ 6: {'Category': 'Vegetables',
+     'Consumer Price': '0.75',
+     'Item Name': 'Broccoli',
+     'Quantity': '180',
+     'Wholesale Price': '0.50'},
+ 7: {'Category': 'Vegetables',
+     'Consumer Price': '0.60',
+     'Item Name': 'Tomato',
+     'Quantity': '150',
+     'Wholesale Price': '0.40'},
+ 8: {'Category': 'Vegetables',
+     'Consumer Price': '0.35',
+     'Item Name': 'Potato',
+     'Quantity': '220',
+     'Wholesale Price': '0.25'},
+ 9: {'Category': 'Vegetables',
+     'Consumer Price': '0.45',
+     'Item Name': 'Onion',
+     'Quantity': '180',
+     'Wholesale Price': '0.30'},
+ 10: {'Category': 'Meats',
+      'Consumer Price': '3.50',
+      'Item Name': 'Chicken',
+      'Quantity': '100',
+      'Wholesale Price': '2.50'},
+ 11: {'Category': 'Meats',
+      'Consumer Price': '4.50',
+      'Item Name': 'Beef',
+      'Quantity': '80',
+      'Wholesale Price': '3.00'},
+ 12: {'Category': 'Meats',
+      'Consumer Price': '4.00',
+      'Item Name': 'Pork',
+      'Quantity': '120',
+      'Wholesale Price': '2.75'},
+ 13: {'Category': 'Meats',
+      'Consumer Price': '6.00',
+      'Item Name': 'Salmon',
+      'Quantity': '90',
+      'Wholesale Price': '4.50'},
+ 14: {'Category': 'Meats',
+      'Consumer Price': '4.75',
+      'Item Name': 'Turkey',
+      'Quantity': '70',
+      'Wholesale Price': '3.25'},
+ 15: {'Category': 'Breads',
+      'Consumer Price': '1.75',
+      'Item Name': 'White Bread',
+      'Quantity': '150',
+      'Wholesale Price': '1.25'},
+ 16: {'Category': 'Breads',
+      'Consumer Price': '2.00',
+      'Item Name': 'Whole Wheat Bread',
+      'Quantity': '130',
+      'Wholesale Price': '1.50'},
+ 17: {'Category': 'Breads',
+      'Consumer Price': '2.25',
+      'Item Name': 'Baguette',
+      'Quantity': '100',
+      'Wholesale Price': '1.75'},
+ 18: {'Category': 'Breads',
+      'Consumer Price': '1.50',
+      'Item Name': 'Croissant',
+      'Quantity': '120',
+      'Wholesale Price': '1.00'},
+ 19: {'Category': 'Breads',
+      'Consumer Price': '2.25',
+      'Item Name': 'Brioche',
+      'Quantity': '90',
+      'Wholesale Price': '1.75'},
+ 20: {'Category': 'Dairy',
+      'Consumer Price': '1.50',
+      'Item Name': 'Milk',
+      'Quantity': '200',
+      'Wholesale Price': '1.00'},
+ 21: {'Category': 'Dairy',
+      'Consumer Price': '3.00',
+      'Item Name': 'Cheese',
+      'Quantity': '180',
+      'Wholesale Price': '2.00'},
+ 22: {'Category': 'Dairy',
+      'Consumer Price': '1.25',
+      'Item Name': 'Yogurt',
+      'Quantity': '220',
+      'Wholesale Price': '0.75'},
+ 23: {'Category': 'Dairy',
+      'Consumer Price': '2.25',
+      'Item Name': 'Butter',
+      'Quantity': '150',
+      'Wholesale Price': '1.50'},
+ 24: {'Category': 'Dairy',
+      'Consumer Price': '1.75',
+      'Item Name': 'Eggs',
+      'Quantity': '250',
+      'Wholesale Price': '1.25'},
+ 25: {'Category': 'Fruits',
+      'Consumer Price': '0.80',
+      'Item Name': 'Pear',
+      'Quantity': '110',
+      'Wholesale Price': '0.55'},
+ 26: {'Category': 'Fruits',
+      'Consumer Price': '1.00',
+      'Item Name': 'Pineapple',
+      'Quantity': '130',
+      'Wholesale Price': '0.75'},
+ 27: {'Category': 'Fruits',
+      'Consumer Price': '2.50',
+      'Item Name': 'Watermelon',
+      'Quantity': '90',
+      'Wholesale Price': '2.00'},
+ 28: {'Category': 'Fruits',
+      'Consumer Price': '0.95',
+      'Item Name': 'Kiwi',
+      'Quantity': '120',
+      'Wholesale Price': '0.70'},
+ 29: {'Category': 'Fruits',
+      'Consumer Price': '1.75',
+      'Item Name': 'Avocado',
+      'Quantity': '100',
+      'Wholesale Price': '1.25'},
+ 30: {'Category': 'Vegetables',
+      'Consumer Price': '0.60',
+      'Item Name': 'Lettuce',
+      'Quantity': '160',
+      'Wholesale Price': '0.40'},
+ 31: {'Category': 'Vegetables',
+      'Consumer Price': '0.50',
+      'Item Name': 'Cucumber',
+      'Quantity': '190',
+      'Wholesale Price': '0.35'},
+ 32: {'Category': 'Vegetables',
+      'Consumer Price': '0.85',
+      'Item Name': 'Bell Pepper',
+      'Quantity': '140',
+      'Wholesale Price': '0.60'},
+ 33: {'Category': 'Vegetables',
+      'Consumer Price': '0.80',
+      'Item Name': 'Spinach',
+      'Quantity': '170',
+      'Wholesale Price': '0.55'},
+ 34: {'Category': 'Vegetables',
+      'Consumer Price': '0.65',
+      'Item Name': 'Zucchini',
+      'Quantity': '150',
+      'Wholesale Price': '0.45'},
+ 35: {'Category': 'Meats',
+      'Consumer Price': '5.50',
+      'Item Name': 'Lamb',
+      'Quantity': '80',
+      'Wholesale Price': '4.00'},
+ 36: {'Category': 'Meats',
+      'Consumer Price': '5.00',
+      'Item Name': 'Veal',
+      'Quantity': '100',
+      'Wholesale Price': '3.50'},
+ 37: {'Category': 'Meats',
+      'Consumer Price': '5.25',
+      'Item Name': 'Duck',
+      'Quantity': '90',
+      'Wholesale Price': '3.75'},
+ 38: {'Category': 'Meats',
+      'Consumer Price': '7.00',
+      'Item Name': 'Shrimp',
+      'Quantity': '120',
+      'Wholesale Price': '5.00'},
+ 39: {'Category': 'Meats',
+      'Consumer Price': '3.00',
+      'Item Name': 'Sausages',
+      'Quantity': '110',
+      'Wholesale Price': '2.00'},
+ 40: {'Category': 'Breads',
+      'Consumer Price': '2.00',
+      'Item Name': 'Sourdough Bread',
+      'Quantity': '140',
+      'Wholesale Price': '1.50'},
+ 41: {'Category': 'Breads',
+      'Consumer Price': '1.90',
+      'Item Name': 'Rye Bread',
+      'Quantity': '120',
+      'Wholesale Price': '1.40'},
+ 42: {'Category': 'Breads',
+      'Consumer Price': '2.10',
+      'Item Name': 'Multigrain Bread',
+      'Quantity': '110',
+      'Wholesale Price': '1.60'},
+ 43: {'Category': 'Breads',
+      'Consumer Price': '1.70',
+      'Item Name': 'Bagel',
+      'Quantity': '130',
+      'Wholesale Price': '1.20'},
+ 44: {'Category': 'Breads',
+      'Consumer Price': '2.30',
+      'Item Name': 'Ciabatta',
+      'Quantity': '100',
+      'Wholesale Price': '1.80'},
+ 45: {'Category': 'Dairy',
+      'Consumer Price': '2.50',
+      'Item Name': 'Cream',
+      'Quantity': '180',
+      'Wholesale Price': '1.75'},
+ 46: {'Category': 'Dairy',
+      'Consumer Price': '1.75',
+      'Item Name': 'Cottage Cheese',
+      'Quantity': '160',
+      'Wholesale Price': '1.25'},
+ 47: {'Category': 'Dairy',
+      'Consumer Price': '1.50',
+      'Item Name': 'Sour Cream',
+      'Quantity': '190',
+      'Wholesale Price': '1.00'},
+ 48: {'Category': 'Dairy',
+      'Consumer Price': '2.75',
+      'Item Name': 'Heavy Cream',
+      'Quantity': '170',
+      'Wholesale Price': '2.00'},
+ 49: {'Category': 'Dairy',
+      'Consumer Price': '3.00',
+      'Item Name': 'Whipped Cream',
+      'Quantity': '150',
+      'Wholesale Price': '2.25'}
+      
+** Reading CSV files with a filter 
+
+Defining a filter allows us to remove data that we don't want when reading a csv file. 
+
+The following function creates and prints an array,
+containing only the rows where the category is "Fruits" 
+
+#+begin_source python 
+
+
+**Reading a csv file into an array with a filter 
+
+import csv 
+import pprint
+
+def read_csv_filter_rows(filename, filter_func):
+    # filter_func is referencing our filter function below. 
+    # creating array to hold the filtered data
+    filtered_data = []
+
+    with open(filename,'r') as csvfile: 
+        reader = csv.reader(csvfile)
+        for row in reader: 
+            if (filter_func(row)):
+                filtered_data.append(row) 
+                # this for loop will only add a row to the array if the filter function returns true. 
+    return filtered_data
+
+# Filter Function 
+def filter_by_category(row, category): 
+    return row[1] == category 
+# if the category column in a row contains the category we want, return 'True'/ 
+
+# Call the read function with a filter function 
+filtered_rows = read_csv_filter_rows("Inventory.csv", lambda row: filter_by_category(row, "Fruits" )) 
+
+# Print filtered data
+pprint.pprint(filtered_rows)
+
+#+end_source
+
+*** Output: 
+
+[['Apple', 'Fruits', '100', '0.50', '0.75'],
+ ['Banana', 'Fruits', '150', '0.35', '0.50'],
+ ['Orange', 'Fruits', '120', '0.45', '0.65'],
+ ['Grapes', 'Fruits', '80', '0.60', '0.85'],
+ ['Strawberries', 'Fruits', '90', '1.20', '1.50'],
+ ['Pear', 'Fruits', '110', '0.55', '0.80'],
+ ['Pineapple', 'Fruits', '130', '0.75', '1.00'],
+ ['Watermelon', 'Fruits', '90', '2.00', '2.50'],
+ ['Kiwi', 'Fruits', '120', '0.70', '0.95'],
+ ['Avocado', 'Fruits', '100', '1.25', '1.75']]
+
+** Writing a CSV file from array 
+
+#+begin_source python
+
+
+import csv 
+
+#Sample data 
+data = [
+        ["Item Name","Category","Quantity","Wholesale Price", "Consumer Price"],
+        ["Apple","Fruits",100,0.50,0.75],
+        ["Banana","Fruits",150,0.35,0.50],
+        ["Orange","Fruits",120,0.45,0.65],
+        ["Grapes","Fruits",80,0.60,0.85],
+        ["Strawberries","Fruits",90,1.20,1.50]]
+
+#Write data to csv file
+
+def write_array_to_csv(data,filename):
+    with open(filename,'w', newline='') as csvfile: 
+        writer = csv.writer(csvfile) 
+        writer.writerows(data) 
+
+#Create a new file called output.csv, using the function we have created
+write_array_to_csv(data,"output.csv")
+
+
+#+end_source
+
+*** Output: 
+
+Item Name,Category,Quantity,Wholesale Price,Consumer Price
+Apple,Fruits,100,0.5,0.75
+Banana,Fruits,150,0.35,0.5
+Orange,Fruits,120,0.45,0.65
+Grapes,Fruits,80,0.6,0.85
+Strawberries,Fruits,90,1.2,1.5
+
+** Writing a dictionary as CSV 
+
+#+begin_source python 
+
+** Writing CSV file from a dictionary 
+
+import csv
+
+
+# declare the sample data
+data = [
+  {"Item Name":"Apple", "Category":"Fruits", "Quantity":100, "Wholesale Price":0.50, "Consumer Price":0.75},
+  {"Item Name":"Banana", "Category":"Fruits", "Quantity":150, "Wholesale Price":0.35, "Consumer Price":0.50},
+  {"Item Name":"Orange", "Category":"Fruits", "Quantity":120, "Wholesale Price":0.45, "Consumer Price":0.65},
+  {"Item Name":"Grapes", "Category":"Fruits", "Quantity":80, "Wholesale Price":0.60, "Consumer Price":0.85},
+  {"Item Name":"Strawberries", "Category":"Fruits", "Quantity":90, "Wholesale Price":1.20, "Consumer Price":1.50}
+]
+
+# define the column names that will be the header row
+# This is required by the dictwriter object in the csv module
+# so it knows how to match each dictionary key to each column 
+
+fieldnames=["Item Name","Category","Quantity","Wholesale Price","Consumer Price"]
+
+# function to write the data
+def write_dict_to_csv(data,filename):
+    with open(filename,'w',newline='') as csvfile:
+        writer = csv.DictWriter(csvfile,fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(data)
+
+
+# write the data to the file
+
+write_dict_to_csv(data,"output.csv")
+
+#+end_source
+*** Output
+
+Item Name,Category,Quantity,Wholesale Price,Consumer Price
+Apple,Fruits,100,0.5,0.75
+Banana,Fruits,150,0.35,0.5
+Orange,Fruits,120,0.45,0.65
+Grapes,Fruits,80,0.6,0.85
+Strawberries,Fruits,90,1.2,1.5
+
+** Challenge: Modify CSV content
+
+#+begin_source python
+
+# Add a column to the inventory.csv file programatically
+
+# There are currently two prices for columns: Wholesale and Consumer price. 
+
+# The challenge is to add a third price column "margin" that shows the difference between the two. 
+
+# Output this as a new file "margin.csv" 
+
+
+import csv 
+
+# defining functions 
+
+# read csv to array
+def read_to_array(filename):
+    data = []
+    with open(filename,'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader: 
+            data.append(row) 
+        return data
+
+# write array to csv 
+def write_array_to_csv(data,filename):
+    with open(filename,'w',newline='') as csvfile:
+        writer = csv.writer(csvfile) 
+        writer.writerows(data) 
+
+#read the csv file to an array 
+inventory_data = read_to_array("Inventory.csv") 
+
+#Create new header 'margin' 
+
+inventory_data[0].append('Margin')
+
+#calculate the new column and append the new column
+
+# The 4th and 5th columns are listed as strings in the array, so these are converted to float, 
+#then the "{:.2f}.format() function rounds the floats to a decimal representation. 
+# Keep in mind that this is often not accurate, but it seems to work in this example. 
+# 
+for n in inventory_data[1:]:
+    margin = "{:.2f}".format( float(n[4])-float(n[3]))
+    n=n.append(margin)
+
+#write to new file
+write_array_to_csv(inventory_data,"append.csv")
+
+#+end_source
+
+** openpyxl
+A library that enables working with xlsx files programmatically
+
+Read, write and manipulate worksheets and workbooks
+
+Useful for automatic tasks
+
+- Creating spreadsheets from other data sources
+- Combine multiple data sources and generate formatted reports
+- Create charts and templates programmatically
+
+Documentation is available at https://openpyxl.readthedocs.io/en/stable
+
+*** Exploring data within a worksheet 
+
+#+begin_source python
+
+# Exploring an xlsx file with openpyxl
+
+import openpyxl 
+
+filename = "FinancialSample.xlsx" 
+
+#Load the workbook
+workbook = openpyxl.load_workbook(filename)
+
+#Print Basic information
+print(f"Number of worksheets: {len(workbook.sheetnames)}")
+for worksheet_name in workbook.sheetnames:
+    worksheet = workbook[worksheet_name]
+    print(f"\nWorksheet: {worksheet_name}")
+    #Explore each worksheet
+
+    # Get Dimensions 
+    dimensions = worksheet.dimensions
+    print(f"    - Dimensions: {dimensions}")
+
+    print(f"Min row: {worksheet.min_row}")
+    print(f"Max row: {worksheet.max_row}")
+
+    print(f"Min column: {worksheet.min_column}")
+    print(f"Max column: {worksheet.max_column}")
+
+    #Check if worksheet is empty
+    if worksheet.max_row == 1 and worksheet.max_column == 1:
+       print('Worksheet is empty')
+    else: 
+       cell = worksheet["A1"]
+       print(f"   - Top-left cell value: {cell.value}")
+       cell = worksheet.cell(row=worksheet.max_row, column = worksheet.max_column)
+       print(f"   - Bottom-right cell value: {cell.value}")
+
+
+#+end_source
+
+**** Output
+
+Number of worksheets: 2
+
+Worksheet: SalesData
+    - Dimensions: A1:P701
+Min row: 1
+Max row: 701
+Min column: 1
+Max column: 16
+   - Top-left cell value: Segment
+   - Bottom-right cell value: 2014
+
+Worksheet: Sheet2
+    - Dimensions: A1:A1
+Min row: 1
+Max row: 1
+Min column: 1
+Max column: 1
+Worksheet is empty
+
+*** Creating a workbook
+
+#+begin_source python
+
+#Creating a workbook in openpyxl 
+
+from openpyxl import Workbook
+import datetime
+import random
+
+#Create a new workbook
+wb = Workbook()
+
+#Get the active worksheet and name it "First"
+
+sheet = wb.active
+sheet.title = "First"
+
+# Add some data to the new sheet
+
+sheet["A1"] = "Test Data"
+sheet["B1"] = 12.4567
+sheet["C1"] = datetime.datetime(2030, 4, 1)
+
+# Use the cell() function to fill a row with values
+
+for i in range(1, 11):
+    sheet.cell(row=5,column=i).value = random.randint(1,50)
+
+# Create a second worksheet
+sheet2 = wb.create_sheet("Second")
+sheet2.cell(row=2,column=2).value = "More Data"
+
+#Use the append() function to add rows to the end of the sheet
+sheet2.append(["One","Two","Three"])
+sheet2.append(["One","Two","Three"])
+sheet2.append(["One","Two","Three"])
+
+#Save the workbook
+wb.save("NewWorkbook.xlsx")
+print("Workbook has been created Successfully")
+
+#+end_source
+
+**** Output
+The output in this example is a file, which contains 2 sheets and some data.
+
+*** Working with Content
+
+#+begin_source python
+# Manipulating the content of a workbook
+
+import openpyxl
+from openpyxl.comments import Comment
+from collections import defaultdict
+
+#Create a new workbook
+filename = "FinancialSample.xlsx"
+
+#Load the workbook
+wb = openpyxl.load_workbook(filename)
+
+#Get the active worksheet
+sheet = wb.active
+
+# Get entire column or row of cells
+
+col = sheet["C"]
+row = sheet[10]
+print(f"{len(col)} cells in column")
+print(f"{len(row)} cells in row")
+
+# Get a range of cells
+
+range = sheet["A2:B7"]
+print(f"{len(range)} cells in range")
+print(range)
+
+# Iterate over rows and columns
+
+for col in sheet.iter_cols(min_row=2, max_row=3, min_col=2, max_col=5):
+    for cell in col:
+        print(cell.value)
+
+# Counting how many times each value appears in a row
+
+counter = defaultdict(int)
+for row in sheet.iter_rows(min_row=2, min_col=3, max_col=3):
+    for cell in row:
+        counter[cell.value] += 1
+print(counter)
+
+# Create a cell with a comment in it
+# Note that this comment format is a bit buggy in online excel
+# Seems to work fine in regular excel
+cell = sheet["A1"]
+cell.comment = Comment("This is a comment", "Liam Shannon")
+
+# Save the workbook
+wb.save("Content.xlsx")
+
+#+end_source
+
+**** Output to terminal
+
+701 cells in column
+16 cells in row
+6 cells in range
+((<Cell 'SalesData'.A2>, <Cell 'SalesData'.B2>), (<Cell 'SalesData'.A3>, <Cell 'SalesData'.B3>), (<Cell 'SalesData'.A4>, <Cell 'SalesData'.B4>), (<Cell 'SalesData'.A5>, <Cell 'SalesData'.B5>), (<Cell 'SalesData'.A6>, <Cell 'SalesData'.B6>), (<Cell 'SalesData'.A7>, <Cell 'SalesData'.B7>))
+Canada
+Germany
+Carretera
+Carretera
+None
+None
+1618.5
+1321
+defaultdict(<class 'int'>, {'Carretera': 93, 'Montana': 93, 'Paseo': 202, 'Velo': 109, 'VTT': 109, 'Amarilla': 94})
+
+**** Output to file.
+
+This also outputs a file. "Content.xlsx"
+
+The cell A1 has a comment marked on it. 
+
+
+*** Styling Cells
+
+
+#+begin_source python
+# Manipulate cell content and styling
+
+from openpyxl import Workbook
+from openpyxl.styles import Font, Alignment, Border, Side
+import openpyxl.styles.numbers as opnumstyle
+import datetime
+
+# Create a new workbook
+wb = Workbook()
+
+# Get the active worksheet and name it "TestSheet"
+sheet = wb.active
+sheet.title = "First"
+
+# Add some data to the new sheet
+sheet["A1"] = "Test Data" 
+sheet["B1"] = 123.4567 
+sheet["C1"] = datetime.datetime(2030,4,1)
+
+# Inspect the default styles of each cell
+print(sheet["A1"].style)
+print(sheet["B1"].number_format)
+print(sheet["C1"].number_format)
+
+# Use some built-in styles
+# sheet["A1"].style = "Title"
+# sheet["B1"].style = "Calculation"
+# sheet["C1"].style = "Accent2"
+# sheet["B1"].number_format = opnumstyle.FORMAT_CURRENCY_USD_SIMPLE
+# sheet["C1"].number_format = opnumstyle.FORMAT_DATE_DDMMYY
+
+sheet.column_dimensions["A"].width = 30
+sheet.row_dimensions[1].height = 50
+
+# Create styles using Fonts and Colours
+
+italic_font = Font(italic=True,size=16)
+coloured_text = Font(name="Courier New", size = 20, color="000000FF")
+centered_text = Alignment(horizontal = "center", vertical = "top")
+border_side = Side(border_style="mediumDashed")
+cell_border = Border(top = border_side, right = border_side, left = border_side, bottom = border_side) 
+
+sheet["A1"].font = italic_font
+sheet["B1"].font = coloured_text
+sheet["B1"].alignment = centered_text
+sheet["C1"].border = cell_border
+
+# Save the workbook
+wb.save("StyledCells.xlsx")
+#+end_source
+
+**** Output to file
+The output file applies some custom styles to three different headings.
+The default styles can alternatively be shown, though in the current file they are commented out.
+
+*** Applying Conditional formatting
+
+#+begin_source python
+# Applying conditional formatting to a worksheet
+
+import openpyxl
+from openpyxl.formatting import Rule
+from openpyxl.styles import Font, PatternFill
+from openpyxl.styles.differential import DifferentialStyle
+
+filename = "FinancialSample.xlsx"
+
+# Load the workbook
+workbook = openpyxl.load_workbook(filename)
+sheet = workbook["SalesData"]
+
+# Define the style to represent the formatting
+red_colour = "ffd2d2"
+bold_text = Font(bold=True, color ="00ff0000")
+red_fill = PatternFill(bgColor= red_colour, fill_type = "solid")
+
+diff_style = DifferentialStyle(font=bold_text, fill=red_fill)
+
+# Create a rule for the conditional formatting
+rule = Rule(type="expression",dxf=diff_style, formula=["$L1<10000"])
+
+# Add the rule to the entire sheet
+dimensions = "L1:L701"
+sheet.conditional_formatting.add(dimensions, rule)
+
+workbook.save("CondFormat.xlsx")
+print("Workbook created successfuly!") 
+
+#+end_source
+
+**** Output to file
+The output file copies FinancialSample.xlsx, but applies conditional formatting
+When Column L1 of a row shows a value under $10,000, the value in row L is highlighted red.
+
+*** Adding Filters
+#+begin_source python
+
+# Adding column filters to a sheet
+
+import csv
+from openpyxl import Workbook
+
+def read_csv_to_array(filename):
+    # Define the array that will hold the data
+    data = []
+    with open(filename,'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            data.append(row)
+    return data
+
+# Read the data into an array of arrays
+inventory_data = read_csv_to_array("Inventory.csv")
+
+# Create a new workbook
+wb = Workbook()
+
+# Get the active worksheet and name it "TestSheet"
+sheet = wb.active
+sheet.title = "Inventory"
+
+for row in inventory_data:
+    sheet.append(row)
+
+# Add the filters to the columns
+filters = sheet.auto_filter
+filters.ref = sheet.dimensions
+
+wb.save("Inventory.xlsx")
+
+#+end_source 
+
+**** Output
+
+This creates the filters on each of the columns in the output spreadsheet.
+
+Interestingly, and frustratingly, this does not actually filter the data.
+
+You still need to open excel and set the filter requirements manually.
+
+*** Challenge: Split a workbook
+
+**** Challenge requirements 
+Take the financial sample xlsx
+Split the data into multiple worksheets, within one workbook
+Each worksheet to show data for a given country (column B)
+
+**** Comments
+This was a particularly difficult challenge. Even copying across the answer seemed to break it.
+
+The main points to remember:
+
+- Sets don't have duplicate values.
+- Better to deal with each row and paste it to a new sheet, than copy whole sheet then delete (more efficient)
+- column_index_from_string function is a useful tool.
+- Create an array for the current line, then append it to the appropriate sheet. 
+
+**** Solution
+
+#+begin_source python
+
+
+# LinkedIn Learning Course
+# Example file for Python: Working with Excel and Spreadsheet Data by Joe Marini
+# Split a single worksheet into multiple worksheets
+
+import openpyxl
+from openpyxl.utils.cell import column_index_from_string
+
+
+def split_workbook(workbook, source_sheet_name, split_column):
+    source_worksheet = workbook[source_sheet_name]
+# Creating an empty set to track sheet names.
+# Sets can only contain unique values, so no chance of duplicates
+    new_sheets = set()
+
+# Creating a variable to track which sheet we are currently in 
+    current_worksheet = None
+
+    for row in source_worksheet.iter_rows(min_row=2):  # Skip header row
+
+        # Get value from the specified column. this function converts A,B,C... column headings to a numerical index 
+        col_indx = column_index_from_string(split_column) - 1
+        value = row[col_indx].value
+
+        # Adding the country value to the new sheets if its not already there. 
+        if value not in new_sheets:
+            new_sheets.add(value)
+
+            # Create a new worksheet for the new value
+            current_worksheet = workbook.create_sheet(title=value)
+        else:
+            current_worksheet = workbook[value]
+
+        # Copy the row to the appropriate worksheet
+        newrow = []
+        for cell in row:
+            newrow.append(cell.value)
+
+        current_worksheet.append(newrow)
+
+    # When complete, return the list of sheets that were added
+    return new_sheets
+
+
+# Example usage
+filename = "FinancialSample.xlsx"
+wb = openpyxl.load_workbook(filename)
+
+# The split_workbook function allows for switching "B" to any other column.
+
+source_sheet_name = "SalesData"
+added_sheets = split_workbook(wb, source_sheet_name, "B")
+
+# Add the auto-filters to each worksheet
+for sheet_name in added_sheets:
+    sheet = wb[sheet_name]
+    filters = sheet.auto_filter
+    filters.ref = sheet.dimensions
+
+# when the loop completes, save the new sheet
+wb.save("new"+filename)
+
+
+#+end_source 
+
+**** Output file
+The output file, as expected, creates a new file named "newFinancialSample.xlsx"
+This contains the main sheet, as well as a bunch of sheets broken down by country. 
+

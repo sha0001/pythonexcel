@@ -1,0 +1,22 @@
+import openpyxl
+
+
+# Load the original document
+wb = openpyxl.load_workbook("FinancialSample.xlsx")
+
+# Access the Active sheet
+sheet = wb.active
+
+# Retrieve the country column
+countries = sheet["B"]
+unicuntries = []
+for country in countries:
+    if country in unicuntries:
+        pass
+    else:
+        unicuntries.append(country)
+
+print(unicuntries) 
+#for country in unicuntries:
+    
+    

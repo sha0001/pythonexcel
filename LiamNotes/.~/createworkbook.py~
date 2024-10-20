@@ -1,0 +1,27 @@
+
+#Creating a workbook in openpyxl 
+
+from openpyxl import Workbook
+import datetime
+import random
+
+#Create a new workbook
+wb = Workbook()
+
+#Get the active worksheet and name it "First"
+
+sheet = wb.active
+sheet.title = "First"
+
+# Add some data to the new sheet
+
+sheet["A1"] = "Test Data"
+sheet["B1"] = 12..4567
+sheet["C1"] = datetime.datetime(2030, 4, 1)
+
+# Use the cell() function to fill a row with values
+
+for i in range(1, 11):
+    sheet.cell(row=5,column=i).value = random.randint(1,50)
+
+    

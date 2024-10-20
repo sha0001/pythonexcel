@@ -1,3 +1,4 @@
+
 # LinkedIn Learning Course
 # Example file for Python: Working with Excel and Spreadsheet Data by Joe Marini
 # Split a single worksheet into multiple worksheets
@@ -45,6 +46,8 @@ def split_workbook(workbook, source_sheet_name, split_column):
 filename = "FinancialSample.xlsx"
 wb = openpyxl.load_workbook(filename)
 
+# The split_workbook function allows for switching "B" to any other column.
+
 source_sheet_name = "SalesData"
 added_sheets = split_workbook(wb, source_sheet_name, "B")
 
@@ -56,4 +59,3 @@ for sheet_name in added_sheets:
 
 # when the loop completes, save the new sheet
 wb.save("new"+filename)
-

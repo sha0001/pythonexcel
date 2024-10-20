@@ -1,0 +1,13 @@
+701 cells in column
+16 cells in row
+6 cells in range
+((<Cell 'SalesData'.A2>, <Cell 'SalesData'.B2>), (<Cell 'SalesData'.A3>, <Cell 'SalesData'.B3>), (<Cell 'SalesData'.A4>, <Cell 'SalesData'.B4>), (<Cell 'SalesData'.A5>, <Cell 'SalesData'.B5>), (<Cell 'SalesData'.A6>, <Cell 'SalesData'.B6>), (<Cell 'SalesData'.A7>, <Cell 'SalesData'.B7>))
+Canada
+Germany
+Carretera
+Carretera
+None
+None
+1618.5
+1321
+defaultdict(<class 'int'>, {'Carretera': 93, 'Montana': 93, 'Paseo': 202, 'Velo': 109, 'VTT': 109, 'Amarilla': 94})
