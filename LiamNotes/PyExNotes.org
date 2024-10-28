@@ -1235,3 +1235,238 @@ wb.save("new"+filename)
 The output file, as expected, creates a new file named "newFinancialSample.xlsx"
 This contains the main sheet, as well as a bunch of sheets broken down by country. 
 
+** XlsxWriter
+This is similar to openpyxl, but focused on creating excel files.
+The documentation is a bit better organised.
+So this might be a better option if all you need is an export
+
+*** Basic Functions
+#+begin_source python
+
+# XlsxWriter basic operations
+
+import xlsxwriter
+import datetime
+
+# create the workbook and add a worksheet
+workbook = xlsxwriter.Workbook("XlsxBasics.xlsx")
+worksheet = workbook.add_worksheet("Test Sheet")
+
+# Use Letter/Row notation
+worksheet.write("A1","Hello World")
+
+# Use Row,Col notation
+worksheet.write(1,0,"Hello World")
+
+# There are specific write() functions for different data types
+worksheet.write_number(2,0,12345)
+worksheet.write_boolean(3,0,True)
+worksheet.write_url(4,0,"https://www.python.org")
+
+# Write a datetime
+date_time = datetime.datetime.strptime('2030-07-28','%Y-%m-%d')
+date_format = workbook.add_format({'num_format':'d mmm yyyy'})
+worksheet.write_datetime(5,0,date_time, date_format) 
+
+# write multiple values into rows and columns
+values = ["Good","Morning","Excel"]
+worksheet.write_row("A6",values)
+worksheet.write_column("D1", values)
+
+# set the zoom on the sheet
+worksheet.set_zoom(200) 
+
+# save the workbook
+workbook.close()
+
+#+end_source
+
+**** Output file
+
+The output of this script is an xlsx file, with some prefilled cells, zoomed to 200%
+
+*** Formatting worksheet content
+
+#+begin_source python
+ 
+# LinkedIn Learning Course
+# Example file for Python: Working with Excel and Spreadsheet Data by Joe Marini
+# XlsxWriter formatting
+
+
+import xlsxwriter
+
+# Sample data
+data = [
+    ["Item Name", "Category", "Quantity", "Wholesale Price", "Consumer Price"],
+    ["Apple", "Fruits", 100, 0.50, 0.75],
+    ["Banana", "Fruits", 150, 0.35, 0.50],
+    ["Orange", "Fruits", 120, 0.45, 0.65],
+    ["Grapes", "Fruits", 80, 0.60, 0.85],
+    ["Strawberries", "Fruits", 90, 1.20, 1.50]
+]
+
+# create the workbook
+workbook = xlsxwriter.Workbook('Inventory.xlsx')
+worksheet = workbook.add_worksheet("Inventory")
+
+# Use the add_format function to define formats that you can use later
+# in the worksheet. NOTE: If you change the format then ALL prior instances
+# of the format will be saved as the most recent one
+
+# Define styles
+fmt_bold = workbook.add_format({'bold':True})
+fmt_money = workbook.add_format({
+    "font_color":"green",
+    "num_format":"$#,##0.00"
+    })
+
+# write the data into the workbook, with styles
+worksheet.write_row(0, 0, data[0],fmt_bold)
+for row, itemlist in enumerate(data[1:], start=1):
+    worksheet.write(row, 0, itemlist[0])
+    worksheet.write(row, 1, itemlist[1],fmt_bold)
+    worksheet.write(row, 2, itemlist[2])
+    worksheet.write(row, 3, itemlist[3],fmt_money)
+    worksheet.write(row, 4, itemlist[4],fmt_money)
+
+# Autofit the table, set zoom and close
+worksheet.autofit()
+
+worksheet.set_zoom(200)
+
+workbook.close()
+
+#+end_source
+ 
+**** Output file
+The output file for this script is a formatted table. 
+
+*** Creating Tables
+
+#+begin_source python
+
+# XlsxWriter Excel Tables
+
+import xlsxwriter
+
+# Sample data
+data = [
+    ["Item Name", "Category", "Quantity", "Wholesale Price", "Consumer Price"],
+    ["Apple", "Fruits", 100, 0.50, 0.75],
+    ["Banana", "Fruits", 150, 0.35, 0.50],
+    ["Orange", "Fruits", 120, 0.45, 0.65],
+    ["Grapes", "Fruits", 80, 0.60, 0.85],
+    ["Strawberries", "Fruits", 90, 1.20, 1.50]
+]
+
+# create the workbook
+workbook = xlsxwriter.Workbook('Tables.xlsx')
+worksheet = workbook.add_worksheet("Inventory")
+
+fmt_bold = workbook.add_format({'bold': True})
+fmt_money = workbook.add_format(
+    {'font_color': 'green', 'num_format': '$#,##0.00'})
+
+# write the data into the workbook
+worksheet.write_row(0, 0, data[0], fmt_bold)
+for row, itemlist in enumerate(data[1:], start=1):
+    # worksheet.write_row(row, 0, itemlist)
+    worksheet.write(row, 0, itemlist[0])
+    worksheet.write(row, 1, itemlist[1], fmt_bold)
+    worksheet.write(row, 2, itemlist[2])
+    worksheet.write(row, 3, itemlist[3], fmt_money)
+    worksheet.write(row, 4, itemlist[4], fmt_money)
+
+# define a table for the worksheet
+table_options = {
+    "name": "InventoryData",
+    "autofilter":True,
+    "style": "Table Style Light 9",
+#    "banded_rows":False,
+#    "first_column":True,
+    "columns": [
+        {"header" : data[0][0]},
+        {"header" : data[0][1]},
+        {"header" : data[0][2]},
+        {"header" : data[0][3]},
+        {"header" : data[0][4]}
+        ]
+    }
+worksheet.add_table("A1:E6", table_options)
+
+worksheet.set_zoom(200)
+worksheet.autofit()
+
+workbook.close()
+
+#+end_source
+
+**** Output file
+The output file for the above is a formatted table, with a chosen table style.
+
+*** Conditional formatting
+
+#+begin_source python
+
+# XlsxWriter formulas and conditional formatting
+
+import csv
+import xlsxwriter
+
+def read_csv_to_array(filename):
+    # define the array that will hold the data
+    data = []
+    with open(filename, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            data.append(row)
+    return data
+
+# Read the data into an array of arrays
+inventory_data = read_csv_to_array("Inventory.csv")
+
+# create the workbook
+workbook = xlsxwriter.Workbook('Conditional.xlsx')
+worksheet = workbook.add_worksheet("Inventory")
+
+fmt_bold = workbook.add_format({'bold': True})
+fmt_money = workbook.add_format(
+    {'font_color': 'green', 'num_format': '$#,##0.00'})
+# define the format for the conditional expression
+fmt_cond = workbook.add_format({"bg_color":"#AAFFAA","bold":True})
+# write the data into the workbook
+worksheet.write_row(0, 0, inventory_data[0], fmt_bold)
+# add the new header for the margin
+worksheet.write(0,5,"Margin",fmt_bold)
+
+# add the data to the worksheet
+for row, itemlist in enumerate(inventory_data[1:], start=1):
+    # worksheet.write_row(row, 0, itemlist)
+    worksheet.write(row, 0, itemlist[0])
+    worksheet.write(row, 1, itemlist[1], fmt_bold)
+    worksheet.write_number(row, 2, int(itemlist[2]))
+    worksheet.write_number(row, 3, float(itemlist[3]), fmt_money)
+    worksheet.write_number(row, 4, float(itemlist[4]), fmt_money)
+    # calculate the row and column for the formula
+    worksheet.write_formula(row,5,f"=E{row+1}-D{row+1}",fmt_money)
+
+# add the conditional formatting
+worksheet.conditional_format(1,0,len(inventory_data),5,{
+    "type": "formula",
+    "criteria": "=$F2>=0.75",
+    "format": fmt_cond
+    })
+
+    
+worksheet.set_zoom(150)
+worksheet.autofit()
+
+workbook.close()
+
+#+end_source
+
+**** Output file
+A table where margins over 75c are highlighted.
+
+*** Writing workbook properties
